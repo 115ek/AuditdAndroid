@@ -35,4 +35,4 @@
 // This needs to be commented out for Android 4.2.1+
 //#define O_DSYNC O_SYNC
 
-typedef long fd_mask;
+typedef unsigned long fd_mask;

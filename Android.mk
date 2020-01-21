@@ -3,7 +3,6 @@ LOCAL_PATH:= $(call my-dir)
 
 include $(CLEAR_VARS)
 
-MY_ROOT_PATH := external/android_audit
 ETC_DIR := $(TARGET_OUT)/etc/audit
 
 LOCAL_MODULE := auditctl
@@ -19,21 +18,20 @@ LOCAL_SRC_FILES:= lib/libaudit.c \
 			src/delete_all.c
 
 
-LOCAL_C_INCLUDES :=	$(MY_ROOT_PATH) \
-			$(MY_ROOT_PATH)/lib \
-			$(MY_ROOT_PATH)/libc \
-			$(MY_ROOT_PATH)/kernel \
-			$(MY_ROOT_PATH)/src
+LOCAL_C_INCLUDES :=	$(LOCAL_PATH) \
+			$(LOCAL_PATH)/lib \
+			$(LOCAL_PATH)/libc \
+			$(LOCAL_PATH)/kernel \
+			$(LOCAL_PATH)/src
 
-LOCAL_SHARED_LIBRARIES := libc libcutils 
+LOCAL_SHARED_LIBRARIES := libc libcutils liblog
+LOCAL_CFLAGS := -Wno-error
 
 include $(BUILD_EXECUTABLE)
 
 
 # Build the auditd binary
 include $(CLEAR_VARS)
-
-MY_ROOT_PATH := external/android_audit
 
 LOCAL_MODULE := auditd
 LOCAL_MODULE_TAGS := optional
@@ -53,14 +51,14 @@ LOCAL_SRC_FILES:= lib/libaudit.c \
 			src/ev.c \
 			src/event.c
 
+LOCAL_C_INCLUDES :=	$(LOCAL_PATH) \
+			$(LOCAL_PATH)/lib \
+			$(LOCAL_PATH)/libc \
+			$(LOCAL_PATH)/kernel \
+			$(LOCAL_PATH)/src
 
-LOCAL_C_INCLUDES :=	$(MY_ROOT_PATH) \
-			$(MY_ROOT_PATH)/lib \
-			$(MY_ROOT_PATH)/libc \
-			$(MY_ROOT_PATH)/kernel \
-			$(MY_ROOT_PATH)/src
-
-LOCAL_SHARED_LIBRARIES := libc libcutils
+LOCAL_SHARED_LIBRARIES := libc libcutils liblog
+LOCAL_CFLAGS := -Wno-error -Wno-int-conversion
 
 include $(BUILD_EXECUTABLE)
 
@@ -70,8 +68,8 @@ include $(CLEAR_VARS)
 LOCAL_MODULE := spade-audit
 LOCAL_MODULE_TAGS := optional
 LOCAL_SRC_FILES:= src/spadeLinuxAudit.c
-LOCAL_CFLAGS :=  -fPIE -DPIE -g -D_GNU_SOURCE -fno-strict-aliasing 
-LOCAL_LDLIBS := -lm -lpthread -lc
+LOCAL_CFLAGS :=  -fPIE -DPIE -g -D_GNU_SOURCE -fno-strict-aliasing -Wno-error
+LOCAL_SHARED_LIBRARIES := libc libcutils libm
 
 include $(BUILD_EXECUTABLE)
 
